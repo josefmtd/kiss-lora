@@ -1,6 +1,7 @@
 #!/bin/sh
+#how to use: sudo ./kiss.sh <tty port> <ax25 port>
 #start AX25 using port defined in /etc/ax25/axports, for me it's lora1
-/usr/sbin/kissattach -m 232 $1 $2
+/usr/sbin/kissattach -m 231 $1 $2
 sleep 1
 #Set KISS mode to NO CRC
 /usr/sbin/kissparms -p $2 -c 1
