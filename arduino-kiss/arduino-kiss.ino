@@ -91,7 +91,7 @@ bool resetRadio() {
 kiss k(255, peekRadio, getRadio, putRadio, peekSerial, getSerial, putSerial, resetRadio);
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(19200);
 
   while(!Serial);
 
@@ -118,7 +118,6 @@ void loop() {
 
   if (now - lastReset >= resetInterval) {
     k.debug("Reset Radio");
-
     lastReset = now;
   }
 }

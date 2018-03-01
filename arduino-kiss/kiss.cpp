@@ -84,6 +84,38 @@ void kiss::debug(const char *const debug_string) {
   putSerial(&fend, 1);
 }
 
+/*
+void kiss::debugFrame(const uint8_t *const send_buffer, const uint16_t send_buffer_size) {
+  uint8_t myBuffer[256];
+  const uint8_t ax25_ident[] = { 0x92, 0x88, 0x8A, 0x9C, 0xA8, 0x40, 0xE0, 0x88,
+  0x8A, 0x84, 0xAA, 0x8E, 0x60, 0x63, 0x03, 0xF0};
+
+  uint16_t offset = 0;
+  myBuffer[offset++] = 0x00;
+
+  // Adding AX25 Address to the Buffer
+  for (uint8_t i = 0; i < sizeof(ax25_ident); i++) {
+    myBuffer[offset++] = ax25_ident[i];
+  }
+
+  for (uint16_t i = 0; i < send_buffer_size; i++) {
+    myBuffer[offset++] = send_buffer[i];
+  }
+
+  const uint8_t fend = FEND;
+  putSerial(&fend, 1);
+
+  for (uint8_t i = 0; i < offset; i++) {
+    uint8_t tinyBuffer[4];
+    uint16_t offset1 = 0;
+    put_byte(tinyBuffer, &offset1, myBuffer[i]);
+    putSerial(tinyBuffer, offset1);
+  }
+
+  putSerial(&fend, 1);
+}
+*/
+
 void kiss::processRadio() {
   uint16_t nBytes = maxPacketSize;
   getRadio(bufferSmall, &nBytes);
@@ -114,7 +146,8 @@ void kiss::processSerial() {
     uint8_t buffer = 0;
 
     if (!getSerial(&buffer, 1, end)) {
-      debug("Serial Receive Timeout");
+      //debug("Serial Receive Timeout");
+      //debugFrame(&bufferSmall[0], offset);
       break;
     }
 
@@ -177,8 +210,11 @@ void kiss::loop() {
     processRadio();
   }
 
-  bool serialIn = peekSerial();
-  if (serialIn) {
+  uint16_t serialIn = peekSerial();
+  if (serialIn != 0) {
+    if (serialIn == 127) {
+      debug("Serial Buffer Overrun");
+    }
     processSerial();
   }
 }

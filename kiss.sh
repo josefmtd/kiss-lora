@@ -7,7 +7,7 @@ sleep 1
 /usr/sbin/kissparms -p $2 -c 1
 sleep 1
 #Set AX25 Parameter
-echo 1 > /proc/sys/net/ax25/ax0/standard_window_size
+echo $3 > /proc/sys/net/ax25/ax0/standard_window_size
 echo 231 > /proc/sys/net/ax25/ax0/maximum_packet_length
 sleep 1
 #Set AX25 Daemon as configured in /etc/ax25/ax25d.conf

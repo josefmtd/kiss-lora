@@ -15,6 +15,7 @@ private:
   void (* putSerial)(const uint8_t *const send_buffer, const uint16_t send_buffer_size);
   bool (* resetRadio)();
 
+  // void debugFrame(const uint8_t *const send_buffer, const uint16_t send_buffer_size);
   void processRadio();
   void processSerial();
 
