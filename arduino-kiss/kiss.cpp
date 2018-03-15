@@ -20,10 +20,10 @@ void (* putRadioIn)(const uint8_t *const send_buffer, const uint16_t send_buffer
 uint16_t (* peekSerialIn)(), bool (* getSerialIn)(uint8_t *const recv_buffer,
 const uint16_t recv_buffer_size, const unsigned long int time_out),
 void (* putSerialIn)(const uint8_t *const send_buffer, const uint16_t send_buffer_size),
-bool (* resetRadioIn)()) : maxPacketSize(maxPacketSizeIn), bufferBig(new uint8_t[maxPacketSizeIn * 2]),
+bool (* resetRadioIn)()/*, void (* flushSerialIn)()*/) : maxPacketSize(maxPacketSizeIn), bufferBig(new uint8_t[maxPacketSizeIn * 2]),
 bufferSmall(new uint8_t[maxPacketSizeIn]), peekRadio(peekRadioIn), getRadio(getRadioIn),
 putRadio(putRadioIn), peekSerial(peekSerialIn), getSerial(getSerialIn), putSerial(putSerialIn),
-resetRadio(resetRadioIn) {
+resetRadio(resetRadioIn)/*, flushSerial(flushSerialIn)*/ {
   debug("Starting KISS mode");
 }
 
@@ -84,7 +84,7 @@ void kiss::debug(const char *const debug_string) {
   putSerial(&fend, 1);
 }
 
-/*
+
 void kiss::debugFrame(const uint8_t *const send_buffer, const uint16_t send_buffer_size) {
   uint8_t myBuffer[256];
   const uint8_t ax25_ident[] = { 0x92, 0x88, 0x8A, 0x9C, 0xA8, 0x40, 0xE0, 0x88,
@@ -114,7 +114,7 @@ void kiss::debugFrame(const uint8_t *const send_buffer, const uint16_t send_buff
 
   putSerial(&fend, 1);
 }
-*/
+
 
 void kiss::processRadio() {
   uint16_t nBytes = maxPacketSize;
@@ -157,6 +157,7 @@ void kiss::processSerial() {
           first = false;
         }
         else {
+          // flushSerial();
           frame_ok = true;
         }
         break;

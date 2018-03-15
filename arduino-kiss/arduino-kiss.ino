@@ -53,7 +53,11 @@ void putRadio(const uint8_t *const send_buffer, const uint16_t send_buffer_size)
 uint16_t peekSerial() {
   return Serial.available();
 }
-
+/*
+void flushSerial() {
+  Serial.flush();
+}
+*/
 bool getSerial(uint8_t *const recv_buffer, const uint16_t recv_buffer_size, const unsigned long int time_out) {
   for (uint16_t i = 0; i < recv_buffer_size; i++) {
     while(!Serial.available()) {
@@ -88,7 +92,7 @@ bool resetRadio() {
   return initRadio();
 }
 
-kiss k(255, peekRadio, getRadio, putRadio, peekSerial, getSerial, putSerial, resetRadio);
+kiss k(255, peekRadio, getRadio, putRadio, peekSerial, getSerial, putSerial, resetRadio/*, flushSerial*/);
 
 void setup() {
   Serial.begin(19200);
@@ -117,7 +121,8 @@ void loop() {
   const unsigned long int resetInterval = 301000;
 
   if (now - lastReset >= resetInterval) {
-    k.debug("Reset Radio");
+    // k.debug("Reset Radio");
+    resetRadio();
     lastReset = now;
   }
 }

@@ -14,8 +14,9 @@ private:
   bool (* getSerial)(uint8_t *const recv_buffer, const uint16_t recv_buffer_size, const unsigned long int time_out);
   void (* putSerial)(const uint8_t *const send_buffer, const uint16_t send_buffer_size);
   bool (* resetRadio)();
+  // void (* flushSerial)();
 
-  // void debugFrame(const uint8_t *const send_buffer, const uint16_t send_buffer_size);
+  void debugFrame(const uint8_t *const send_buffer, const uint16_t send_buffer_size);
   void processRadio();
   void processSerial();
 
@@ -26,7 +27,7 @@ public:
   uint16_t (* peekSerial)(), bool (* getSerial)(uint8_t *const recv_buffer,
   const uint16_t recv_buffer_size, const unsigned long int time_out),
   void (* putSerial)(const uint8_t *const send_buffer, const uint16_t send_buffer_size),
-  bool (* resetRadio)());
+  bool (* resetRadio)()/*, void (* flushSerial)()*/);
   ~kiss();
 
   void debug(const char *const debug_string);
