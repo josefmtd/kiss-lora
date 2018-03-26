@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
     write(socket_file_descriptor, message, strlen(message));
 
     printf("Sent message via connection to %s\n", address_buffer);
-    sleep(60);
+    sleep(30);
     close(socket_file_descriptor);
 
     if (!single)
