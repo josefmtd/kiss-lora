@@ -1,0 +1,48 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:				kiss
+# Required-Start:		bluetooth prosody
+# Required-Stop:		bluetooth prosody
+# Default-Start:		2 3 4 5
+# Default-Stop:			0 1 6
+# Short-Description:	AX.25 Startup Daemon
+# Description:			This daemon starts initializing AX.25 port and starts the
+#						AX.25 Daemon Server
+### END INIT INFO
+
+case $1 in
+	start)
+		#Attach USB device USB0 as KISS AX.25 Port 1
+		/usr/sbin/kissattach -m 231 /dev/ttyUSB0 1
+		sleep 1
+		#Set KISS mode to NO CRC
+		/usr/sbin/kissparms -p $2 -c 1
+		sleep 1
+		#Set AX25 Parameter
+		echo $3 > /proc/sys/net/ax25/ax0/standard_window_size
+		echo 231 > /proc/sys/net/ax25/ax0/maximum_packet_length
+		sleep 1
+		#Added FM Radio
+		#/usr/sbin/kissattach -m 231 $4 $5
+		#Set AX25 Daemon as configured in /etc/ax25/ax25d.conf
+		/usr/sbin/ax25d
+		sleep 1
+		#Setup MHeard Daemon
+		/usr/sbin/mheardd
+		;;
+	stop)
+		killall kissattach
+		killall ax25d
+		killall mheardd
+		;;
+	restart)
+		$0 stop && sleep 2 && $0 start
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload|status}"
+		exit 2
+		;;
+esac
+
+exit 0
