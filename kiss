@@ -13,6 +13,7 @@
 
 case $1 in
 	start)
+		echo "Starting KISS"
 		#Attach USB device USB0 as KISS AX.25 Port 1
 		/usr/sbin/kissattach -m 231 /dev/ttyUSB0 1
 		sleep 1
@@ -32,6 +33,7 @@ case $1 in
 		/usr/sbin/mheardd
 		;;
 	stop)
+		echo "Stopping KISS"
 		killall kissattach
 		killall ax25d
 		killall mheardd
