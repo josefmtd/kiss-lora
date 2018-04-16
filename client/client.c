@@ -34,7 +34,6 @@ int main(int argc, char *argv[]) {
   int socket_file_descriptor;
   char address_buffer[20], *message, *port_call;
   char *port = NULL, *client_call = NULL, *server_call = NULL;
-  char disconnect[4] = {}
 
   while ((option = getopt(argc, argv, "t:sv")) != -1) {
     switch (option) {
@@ -118,7 +117,7 @@ int main(int argc, char *argv[]) {
     write(socket_file_descriptor, message, strlen(message));
 
     printf("Sent message via connection to %s\n", address_buffer);
-    sleep(30);
+    sleep(60);
     close(socket_file_descriptor);
 
     if (!single)
