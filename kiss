@@ -1,14 +1,14 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:				kiss
-# Required-Start:		bluetooth prosody
-# Required-Stop:		bluetooth prosody
-# Default-Start:		2 3 4 5
-# Default-Stop:			0 1 6
+# Provides:		kiss
+# Required-Start:	bluetooth prosody
+# Required-Stop:	bluetooth prosody
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
 # Short-Description:	AX.25 Startup Daemon
-# Description:			This daemon starts initializing AX.25 port and starts the
-#						AX.25 Daemon Server
+# Description:		This daemon starts initializing AX.25 port and starts the
+#			AX.25 Daemon Server
 ### END INIT INFO
 
 case $1 in
