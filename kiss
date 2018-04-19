@@ -15,7 +15,12 @@ case $1 in
 	start)
 		echo "Starting KISS"
 		#Attach USB device USB0 as KISS AX.25 Port 1
-		/usr/sbin/kissattach -m 231 /dev/ttyUSB0 1
+		if [ -e "/dev/ttyUSB0"]
+		then
+			/usr/sbin/kissattach -m 231 /dev/ttyUSB0 1
+		else
+			/usr/sbin/kissattach -m 231 /dev/ttyACM0 1
+		fi
 		sleep 1
 		#Set KISS mode to NO CRC
 		/usr/sbin/kissparms -p 1 -c 1

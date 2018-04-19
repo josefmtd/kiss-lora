@@ -17,26 +17,29 @@ while 1:
 	print "Accepted connection from ", address
 
 	while 1:
-		data = client_socket.recv(1024)
-		if data == "!AX":
-			client_socket.send("Initiating connection to server" + "\n")
-			ax25 = pexpect.spawn("call -r -S 1 YD0SHY-2", echo = False)
-			ax25.expect('Rawmode')
-			client_socket.send("Connection initiated, sending test message" + "\n")
-			message = 'Uji coba mengirimkan pesan menggunakan INA-Rad dengan protokol AX.25'
-			ax25.sendline(message)
-			time.sleep(10)
-			ax25.kill(signal.SIGKILL)
-			client_socket.send("Connection terminated" + "\n")
-		elif data == "!BEX":
-			client_socket.send("Bluetooth connection terminated" + "\n")
-			print "Bluetooth Terminated"
-			break
-		elif data == "!EX":
-			client_socket.send("Server terminated" + "\n");
-			break
-		else:
-			print "Received data = [%s]" % data
+		try:
+			data = client_socket.recv(1024)
+			if data == "!AX":
+				client_socket.send("Initiating connection to server" + "\n")
+				ax25 = pexpect.spawn("call -r -S 1 YD0SHY-2", echo = False)
+				ax25.expect('Rawmode')
+				client_socket.send("Connection initiated, sending test message" + "\n")
+				message = 'Uji coba mengirimkan pesan menggunakan INA-Rad dengan protokol AX.25'
+				ax25.sendline(message)
+				time.sleep(10)
+				ax25.kill(signal.SIGKILL)
+				client_socket.send("Connection terminated" + "\n")
+			elif data == "!BEX":
+				client_socket.send("Bluetooth connection terminated" + "\n")
+				print "Bluetooth Terminated"
+				break
+			elif data == "!EX":
+				client_socket.send("Server terminated" + "\n");
+				break
+			else:
+				print "Received data = [%s]" % data
+		except:
+			break;
 	if data == "!EX":
 		break
 	else:
