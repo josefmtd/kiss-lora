@@ -30,6 +30,11 @@
  * http://www.airspayce.com/mikem/arduino/RadioHead/RadioHead-1.83.zip
  */
 
+/* for LoRa32u4
+ *  #define pinReset 4
+ *  static RH_RF95 rf95(8,7)
+ */
+
 #define pinReset 7
 static RH_RF95 rf95;
 
