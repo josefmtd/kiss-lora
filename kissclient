@@ -2,8 +2,8 @@
 
 ### BEGIN INIT INFO
 # Provides:				kiss
-# Required-Start:		prosody
-# Required-Stop:		prosody
+# Required-Start:		bluetooth prosody
+# Required-Stop:		bluetooth prosody
 # Default-Start:		2 3 4 5
 # Default-Stop:			0 1 6
 # Short-Description:	AX.25 Startup Daemon
@@ -17,21 +17,19 @@ case $1 in
 		if [ -c /dev/ttyUSB0 ]
 		then
 			/usr/sbin/kissattach -m 231 /dev/ttyUSB0 1
-			echo "Starting AX.25 port on port USB0"
+			echo "Starting AX.25 Port on port USB0"
 		elif [ -c /dev/ttyACM0 ]
 		then
 			/usr/sbin/kissattach -m 231 /dev/ttyACM0 1
-			echo "Starting AX.25 port on port ACM0"
+			echo "Starting AX.25 Port on port ACM0"
 		else
 			echo "Cannot start AX.25 port"
 			exit 1
 		fi
 		sleep 1
-		
 		#Set KISS mode to NO CRC
 		/usr/sbin/kissparms -p 1 -c 1
 		sleep 1
-		
 		#Set AX25 Parameter
 		echo 1 > /proc/sys/net/ax25/ax0/standard_window_size
 		echo 231 > /proc/sys/net/ax25/ax0/maximum_packet_length
@@ -39,18 +37,10 @@ case $1 in
         echo 3000 > /proc/sys/net/ax25/ax0/t2_timeout
         echo 30000 > /proc/sys/net/ax25/ax0/t3_timeout
 		sleep 1
-		
-		#Set AX25 Daemon as configured in /etc/ax25/ax25d.conf
-		/usr/sbin/ax25d
-		sleep 1
-		#Setup MHeard Daemon
-		/usr/sbin/mheardd
 		;;
 	stop)
 		echo "Stopping KISS"
 		killall kissattach
-		killall ax25d
-		killall mheardd
 		;;
 	restart)
 		$0 stop && sleep 2 && $0 start
