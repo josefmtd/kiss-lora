@@ -7,6 +7,10 @@ import pexpect
 import subprocess
 import signal
 
+def debug(socket, debugmsg):
+	print debugmsg
+	socket.send(debugmsg)
+
 while 1:
 	server_socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 	port = 1
@@ -20,17 +24,29 @@ while 1:
 		try:
 			data = client_socket.recv(1024)
 			if data == "!AX":
-				client_socket.send("Initiating connection to server" + "\n")
+				debug(client_socket, "Initiating connection to server\n")
 				ax25 = pexpect.spawn("call -r -S 1 YD0SHY-2", echo = False)
 				ax25.expect('Rawmode')
-				client_socket.send("Connection initiated, sending test message" + "\n")
+				debug(client_socket, "Connection initiated, sending test message\n")
 				message = 'Uji coba mengirimkan pesan menggunakan INA-Rad dengan protokol AX.25'
 				ax25.sendline(message)
-				time.sleep(10)
+				time.sleep(5)
 				ax25.kill(signal.SIGKILL)
-				client_socket.send("Connection terminated" + "\n")
+				time.sleep(5)
+				debug(client_socket, "Connection terminated\n")
+			elif data == "!AXAX":
+				debug(client_socket, "Initiating connection to server YD0SHY-3\n")
+				ax25_yd0shy3 = pexpect.spawn("call -r -S 1 YD0SHY-3", echo = False)
+				ax25_yd0shy3.expect('Rawmode')
+				debug(client_socket, "Connection initiated, sending test message\n")
+				message = 'Uji coba mengirimkan pesan menggunakan INA-Rad dengan protokol AX.25'
+				ax25_yd0shy3.sendline(message)
+				time.sleep(5)
+				ax25.kill(signal.SIGKILL)
+				time.sleep(5)
+				debug(client_socket, "Connection terminated\n")
 			elif data == "!BEX":
-				client_socket.send("Bluetooth connection terminated" + "\n")
+				debug(client_socket, "Bluetooth connection terminated\n")
 				print "Bluetooth Terminated"
 				break
 			elif data == "!EX":
@@ -39,6 +55,7 @@ while 1:
 			else:
 				print "Received data = [%s]" % data
 		except:
+			print "Connection error\n"
 			break;
 	if data == "!EX":
 		break
